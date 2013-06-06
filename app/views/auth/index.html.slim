@@ -1,0 +1,45 @@
+
+.row-fluid
+  .span5
+    = form_for @session, :url => sign_in_path do |f|
+      fieldset        
+        legend Sign In
+        .control-group
+          .controls
+            = f.text_field :email, :placeholder => 'Email…', :class => 'input-xlarge'
+        .control-group          
+          .controls
+            = f.password_field :password, :placeholder => 'Password…', :class => 'input-xlarge'
+        .control-group          
+          .controls
+            = f.submit 'Login', :class => 'btn btn-success'
+
+  .span2.margin-top-100
+    p.text_align-center
+      span.muted.fs24
+        | – OR –
+
+  .span5    
+    = form_for @user, :url => sign_up_path do |f|
+      fieldset
+        .row
+        legend Sign Up        
+        .control-group
+          .row-fluid
+            .controls            
+              = f.text_field :first_name, :placeholder => 'First name…', :class => 'input-small pull-left'
+              = f.text_field :last_name, :placeholder => 'First name…', :class => 'input-medium pull-right'
+        .control-group              
+          .controls
+            = f.text_field :email, :placeholder => 'Email…', :class => 'input-xlarge'
+        .control-group
+          .controls
+            = f.password_field :password, :placeholder => 'Password…', :class => 'input-xlarge'
+            p.help-block Password should be at least 8 characters
+        .control-group          
+          .controls
+            = f.password_field :password_confirmation, :placeholder => 'Confirmation…', :class => 'input-xlarge'
+            p.help-block Confirmation should match password
+        .control-group          
+          .controls
+            = f.submit 'Register', :class => 'btn btn-success'

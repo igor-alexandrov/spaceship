@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    = stylesheet_link_tag :application
+    = javascript_include_tag :application    
+
+    title
+      | Billing
+    
+    = csrf_meta_tag
+    
+  body
+    .container-narrow
+      .masthead
+        h3.muted
+          | Billing
+      hr    
+      = yield
+      hr
+      .footer
+        p
+          = link_to 'Igor Alexandrov', 'https://github.com/igor-alexandrov', :target => '_blank'
+          | , 2013
