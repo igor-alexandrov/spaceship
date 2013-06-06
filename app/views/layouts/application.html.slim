@@ -12,7 +12,16 @@ html
   body
     .container-narrow
       .masthead
-        h3.muted
+        ul.nav.nav-pills.pull-right
+          li{ class="#{'active' if params[:controller] == 'home' && params[:action] == 'index'}" }
+            = link_to 'Home', root_path
+          li{ class="#{'active' if params[:controller] == 'home' && params[:action] == 'about'}" }
+            = link_to 'About', '#'
+          - if current_user.present?  
+            li
+              = link_to 'Sign Out', sign_out_path
+
+        h3.muted          
           | Billing
       hr    
       = yield
@@ -20,4 +29,6 @@ html
       .footer
         p
           = link_to 'Igor Alexandrov', 'https://github.com/igor-alexandrov', :target => '_blank'
+          | , 
+          = link_to 'JetRockets', 'http://www.jetrockets.ru', :target => '_blank'
           | , 2013
