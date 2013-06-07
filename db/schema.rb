@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130607124909) do
+ActiveRecord::Schema.define(:version => 20130607140911) do
 
   create_table "billing_invoices", :force => true do |t|
     t.integer  "user_id"
@@ -61,6 +61,25 @@ ActiveRecord::Schema.define(:version => 20130607124909) do
   end
 
   add_index "billing_subscriptions", ["user_id"], :name => "index_billing_subscriptions_on_user_id"
+
+  create_table "billing_transactions", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "invoice_id"
+    t.integer  "card_id"
+    t.string   "action"
+    t.decimal  "amount",        :precision => 8, :scale => 2
+    t.boolean  "success"
+    t.string   "authorization"
+    t.string   "message"
+    t.text     "params"
+    t.boolean  "refunded"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+  end
+
+  add_index "billing_transactions", ["card_id"], :name => "index_billing_transactions_on_card_id"
+  add_index "billing_transactions", ["invoice_id"], :name => "index_billing_transactions_on_invoice_id"
+  add_index "billing_transactions", ["user_id"], :name => "index_billing_transactions_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"
