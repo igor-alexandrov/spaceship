@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Billing::Application.load_tasks
+Spaceship::Application.load_tasks

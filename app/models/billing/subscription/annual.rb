@@ -1,4 +1,4 @@
-class Billling::Subscription::Annual < Billling::Subscription::Base
+class Billing::Subscription::Annual < Billing::Subscription::Base
   def self.billing_interval(ignore_test_mode = false)
     begin
       Settings.billing.mode == 'test' && !ignore_test_mode ? 3 : 365

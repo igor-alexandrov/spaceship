@@ -1,12 +1,12 @@
 # coding: UTF-8
 
-class Billling::Subscription::Base < ActiveRecord::Base
+class Billing::Subscription::Base < ActiveRecord::Base
   self.table_name = 'billing_subscriptions'
 
   belongs_to :user, :inverse_of => :subscription
-  belongs_to :plan, :inverse_of => :subscriptions
+  belongs_to :plan, :inverse_of => :subscriptions, :class_name => 'Billing::Plan'
 
-  delegate :maximum_email_requests_count, :maximum_phone_requests_count, :maximum_developers_count
+  delegate :maximum_email_requests_count, :maximum_phone_calls_count, :maximum_developers_count, :to => :plan
   
   before_validation :set_billing_dates, :on => :create
   
@@ -74,11 +74,11 @@ class Billling::Subscription::Base < ActiveRecord::Base
   end
   
   def monthly?
-    self.forced_type.present? ? self.forced_type == :monthly : self.is_a?(Billling::Subscription::Monthly)    
+    self.forced_type.present? ? self.forced_type == :monthly : self.is_a?(Billing::Subscription::Monthly)    
   end
     
   def annual?    
-    self.forced_type.present? ? self.forced_type == :annual : self.is_a?(Billling::Subscription::Annual)    
+    self.forced_type.present? ? self.forced_type == :annual : self.is_a?(Billing::Subscription::Annual)    
   end    
           
   def amount_unspent

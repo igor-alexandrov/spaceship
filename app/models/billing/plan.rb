@@ -6,18 +6,16 @@ class Billing::Plan < ActiveRecord::Base
   validates :title, :presence => true
   validates :key, :presence => true, :uniqueness => true
 
-  validates :monthly_amount,  :presence => { :unless => :free? },
-                              :absence => { :if => :free? },
+  validates :monthly_amount,  :presence => true,
                               :numericality => { :allow_nil => true, :greater_than_or_equal_to => 0 }
                               
-  validates :annual_amount,   :presence => { :unless => :free? },
-                              :absence => { :if => :free? },
+  validates :annual_amount,   :presence => true,                              
                               :numericality => { :allow_nil => true, :greater_than_or_equal_to => 0 }
 
   validates :trial, :presence => true, :numericality => { :greater_than_or_equal_to => 0 }
   
   validates :maximum_email_requests_count, :numericality => { :greater_or_equal_than => 0, :allow_nil => true }
-  validates :maximum_phone_requests_count, :numericality => { :greater_or_equal_than => 0, :allow_nil => true }
+  validates :maximum_phone_calls_count, :numericality => { :greater_or_equal_than => 0, :allow_nil => true }
   
   validates :maximum_developers_count, :presence => true, :numericality => { :greater_than => 0 }
   

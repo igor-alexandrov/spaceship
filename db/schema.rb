@@ -11,16 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130607073133) do
+ActiveRecord::Schema.define(:version => 20130607081635) do
 
   create_table "billing_plans", :force => true do |t|
     t.string   "title"
     t.string   "key"
-    t.decimal  "monthly_cost",                 :precision => 8, :scale => 2
-    t.decimal  "annual_cost",                  :precision => 8, :scale => 2
+    t.decimal  "monthly_amount",               :precision => 8, :scale => 2
+    t.decimal  "annual_amount",                :precision => 8, :scale => 2
     t.integer  "trial"
     t.integer  "maximum_email_requests_count"
-    t.integer  "maximum_phone_requests_count"
+    t.integer  "maximum_phone_calls_count"
     t.integer  "maximum_developers_count"
     t.datetime "created_at",                                                 :null => false
     t.datetime "updated_at",                                                 :null => false
