@@ -21,12 +21,18 @@ hr
 
     br
     - if plan.maximum_phone_calls_count.present?
-      =' pluralize(plan.maximum_phone_calls_count, 'phone calls')
+      =' pluralize(plan.maximum_phone_calls_count, 'phone call')
       | per month
     - else
       strong
         ' Unlimited
       | phone calls
+
+    - if plan.trial.present? && plan.trial > 0
+      br
+        =' pluralize(plan.trial, 'day')
+        strong
+         | trial   
 
 hr
   p.text_align-center
@@ -38,10 +44,14 @@ hr
         | , per developer
 
   .text_align-center
-    = form_tag subscribe_path, :method => :post do
-      = hidden_field_tag 'plan', plan.key
-      = hidden_field_tag 'type', 'monthly'
-      = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"    
+    - unless current_user.subscribed_to?(plan, :monthly)
+      = form_tag subscribe_path, :method => :post do
+        = hidden_field_tag '[subscription]plan', plan.key
+        = hidden_field_tag '[subscription]type', 'monthly'
+        = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"    
+    - else
+      strong
+        | Your current plan
 
 hr
   p.text_align-center
@@ -53,7 +63,11 @@ hr
         | , per developer
 
   .text_align-center
-    = form_tag subscribe_path, :method => :post do
-      = hidden_field_tag 'plan', plan.key
-      = hidden_field_tag 'type', 'annual'
-      = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"
+    - unless current_user.subscribed_to?(plan, :annual)
+      = form_tag subscribe_path, :method => :post do
+        = hidden_field_tag '[subscription]plan', plan.key
+        = hidden_field_tag '[subscription]type', 'annual'
+        = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"
+    - else
+      strong
+        | Your current plan

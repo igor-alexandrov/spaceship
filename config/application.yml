@@ -1,0 +1,30 @@
+defaults: &defaults
+  identity:
+    app_name: LienLog (DEV)    
+  braintree:
+    merchant_id:
+    public_key:
+    private_key:
+    environment: sandbox
+  billing:
+    mode: 'test' #in 'test' mode all billing intervals are minimized to 2 and 3 days
+
+production:
+  <<: *defaults
+  identity:
+    app_name: Spaceship
+
+staging:
+  <<: *defaults
+  identity:
+    app_name: Spaceship (STAGING)
+
+test:
+  <<: *defaults
+  identity:
+    app_name: Spaceship (TEST)
+
+development:
+  <<: *defaults
+  identity:
+    app_name: Spaceship (DEV)

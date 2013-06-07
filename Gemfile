@@ -7,11 +7,15 @@ gem 'pg'
 gem 'slim'
 
 gem 'authlogic'
+gem 'settingslogic'
+
 gem 'default_value_for'
 
 gem 'squeel'
 
 gem 'will_paginate'
+
+
 
 # Gems used only for assets and not required
 # in production environments by default.

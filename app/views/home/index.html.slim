@@ -1,6 +1,9 @@
 = render :partial => 'shared/promo'
 = render :partial => 'shared/navbar'
 
+- if @subscription.present?
+  = render :partial => 'shared/errors', :locals => { :object => @subscription }
+
 .row-fluid.margin-bottom-60
   - if @startup.present?
     .span6

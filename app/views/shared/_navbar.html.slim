@@ -6,7 +6,7 @@
       li{ class="#{'active' if params[:controller] == 'invoices'}" }
         = link_to invoices_path do
           | Invoices        
-          span.badge.badge-success
-            | 0
+          span.badge{ class="#{ current_user.billing_invoices.unpaid.count > 0 ? 'badge-important' : 'badge-success' }" }
+            = current_user.billing_invoices.unpaid.count
       li{ class="#{'active' if params[:controller] == 'transactions'}" }
         = link_to 'Transactions', transactions_path

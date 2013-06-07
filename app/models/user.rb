@@ -19,46 +19,74 @@ class User < ActiveRecord::Base
       ["billing_subscriptions.subscription_date <= ? AND (billing_subscriptions.unsubscription_date IS NULL OR billing_subscriptions.unsubscription_date > ?)", Date.today, Date.today]
     },
     :include => :plan,
-    :dependent => :destroy,
-    :inverse_of => :user
+    :dependent => :destroy
 
   delegate  :plan, :to => :billing_subscription, :allow_nil => true    
 
   has_many :billing_invoices, :class_name => 'Billing::Invoice'
   
-  def subscribe_to(plan, options = {})    
+  attr_accessor :locked_credit
+
+  def invoice!(full_amount, title, options={})
     options.reverse_merge!({
-      :type         => :monthly,
-      :trial        => false,
-      :forced       => false,
-      :refund       => true
-    })
+      :params => nil
+    })  
     
-    case options[:type].to_sym
-    when :annual
-      subscription = Billing::Subscription::Annual.new(:plan => plan, :user_id => self.id)
-    else
-      subscription = Billing::Subscription::Monthly.new(:plan => plan, :user_id => self.id)
-    end    
-    subscription.forced! if options[:forced]
-    subscription.inherit!(self.billing_subscription) if self.billing_subscription.present?    
-    subscription.developers_count = options[:developers_count] if options[:developers_count].present?    
-
-    return false if subscription.invalid?
-    
-    begin
-      transaction do
-        if self.billing_subscription.present?          
-          raise ActiveRecord::Rollback if !self.billing_subscription.cancel(Date.today, :refund => options[:refund])
-        end
-
-        subscription.save!        
-      end
-    rescue => e      
-      return false
-    end      
-    subscription.bill(:current_user => options[:current_user]) unless subscription.trial?    
-    
-    return true
+    self.billing_invoices.create! do |i|
+      i.user = self
+      i.params = options[:params]      
+      i.full_amount = full_amount
+      i.title = title
+      i.credit_deduction = self.from_credit(full_amount)        
+      i.amount = i.full_amount - i.credit_deduction
+    end
   end  
+
+  def to_credit(amount)           
+    success = transaction do
+      self.lock_available_credit!
+      self.available_credit += amount.abs      
+      self.save(:validate => false)            
+    end
+    amount = (self.available_credit - self.locked_credit).abs
+    
+    self.billing_transactions.create(
+      :action => 'credit_replenishment',
+      :amount => amount,
+      :success => success    
+    ) if amount != 0       
+    
+    return amount
+  end
+  
+  def from_credit(amount)        
+    success = transaction do
+      self.lock_available_credit!
+      self.available_credit < amount.abs ? self.available_credit = 0 : self.available_credit -= amount.abs        
+      self.save(:validate => false)
+    end
+    amount = (self.locked_credit - self.available_credit).abs
+    
+    self.billing_transactions.create(
+      :action => 'credit_withdrawal',
+      :amount => amount,
+      :success => success    
+    ) if amount != 0       
+    
+    return amount
+  end
+
+  def subscribed_to?(plan, type)
+    self.billing_subscription.present? &&
+    self.billing_subscription.plan == plan &&
+    self.billing_subscription.class.default_type == type.to_sym
+  end
+
+protected
+  
+  def lock_available_credit!
+    self.lock!
+    self.locked_credit = self.available_credit
+  end
+
 end

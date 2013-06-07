@@ -3,6 +3,8 @@
 class Billing::Plan < ActiveRecord::Base
   self.table_name = 'billing_plans'
 
+  has_many :subscriptions, :class_name => 'Billing::Subscription::Base'
+
   validates :title, :presence => true
   validates :key, :presence => true, :uniqueness => true
 

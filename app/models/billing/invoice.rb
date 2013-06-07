@@ -82,9 +82,9 @@ class Billing::Invoice < ActiveRecord::Base
   end
 
   def pay_async
-    return true if self.paid? || self.declined?
+    return true if self.paid?
 
-    Delayed::Job.enqueue(Billing::InvoicePayJob.new(self.id), :priority => 10, :run_at => 1.hour.from_now, :queue => 'billing')
+    # Delayed::Job.enqueue(Billing::InvoicePayJob.new(self.id), :priority => 10, :run_at => 1.hour.from_now, :queue => 'billing')
   end
 
   def pay!(options = {})
