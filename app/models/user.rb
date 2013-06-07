@@ -23,6 +23,8 @@ class User < ActiveRecord::Base
     :inverse_of => :user
 
   delegate  :plan, :to => :billing_subscription, :allow_nil => true    
+
+  has_many :billing_invoices, :class_name => 'Billing::Invoice'
   
   def subscribe_to(plan, options = {})    
     options.reverse_merge!({

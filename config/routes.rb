@@ -7,5 +7,8 @@ Spaceship::Application.routes.draw do
 
   post 'subscribe' => 'home#subscribe'
 
+  resources :invoices
+  resources :transactions
+
   root :to => 'home#index'
 end

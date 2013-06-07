@@ -1,9 +1,5 @@
-.jumbotron
-  h1
-    | Super awesome development team!
-
-  p.lead
-    | Take your seat and let our team do our best for your project.
+= render :partial => 'shared/promo'
+= render :partial => 'shared/navbar'
 
 .row-fluid.margin-bottom-60
   - if @startup.present?

@@ -4,11 +4,14 @@ gem 'rails', '3.2.13'
 
 gem 'pg'
 
-gem 'squeel'
 gem 'slim'
 
 gem 'authlogic'
 gem 'default_value_for'
+
+gem 'squeel'
+
+gem 'will_paginate'
 
 # Gems used only for assets and not required
 # in production environments by default.

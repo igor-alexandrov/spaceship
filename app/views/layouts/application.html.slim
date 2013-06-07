@@ -5,35 +5,27 @@ html
     = javascript_include_tag :application    
 
     title
-      | Spaceship
+      | Spaceship by JetRockets
     
     = csrf_meta_tag
     
   body
     .container-narrow
-      .masthead
-        ul.nav.nav-pills.pull-right
-          li{ class="#{'active' if params[:controller] == 'home' && params[:action] == 'index'}" }
-            = link_to 'Home', root_path
+      .page-header
+        ul.nav.nav-pills.pull-right.margin-top-10
           li{ class="#{'active' if params[:controller] == 'home' && params[:action] == 'about'}" }
             = link_to 'About', '#'
-          - if current_user.present?  
+          - if current_user.present?
             li
               = link_to 'Sign Out', sign_out_path
 
-        h3.muted          
-          | Spaceship
-      hr    
+        = link_to 'http://www.jetrockets.ru', :target => '_blank' do
+          = image_tag 'http://www.jetrockets.ru/public/logo.png', :title => 'JetRockets: разработка на Ruby on Rails'
+      
       = yield
       hr
-      .footer
-        .pull-left
+      .footer        
           p 
-            =' link_to 'Igor Alexandrov', 'https://github.com/igor-alexandrov', :target => '_blank'
+            = link_to 'Igor Alexandrov', 'https://github.com/igor-alexandrov', :target => '_blank'
             span.muted
-              ' |
-            = link_to 'JetRockets', 'http://www.jetrockets.ru', :target => '_blank'
-        .pull-right
-          p
-            span.muted
-              | 2013
+              | , 2013
