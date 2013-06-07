@@ -11,7 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130606145132) do
+ActiveRecord::Schema.define(:version => 20130607073133) do
+
+  create_table "billing_plans", :force => true do |t|
+    t.string   "title"
+    t.string   "key"
+    t.decimal  "monthly_cost",                 :precision => 8, :scale => 2
+    t.decimal  "annual_cost",                  :precision => 8, :scale => 2
+    t.integer  "trial"
+    t.integer  "maximum_email_requests_count"
+    t.integer  "maximum_phone_requests_count"
+    t.integer  "maximum_developers_count"
+    t.datetime "created_at",                                                 :null => false
+    t.datetime "updated_at",                                                 :null => false
+  end
+
+  add_index "billing_plans", ["key"], :name => "index_billing_plans_on_key", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email"
@@ -27,6 +42,8 @@ ActiveRecord::Schema.define(:version => 20130606145132) do
     t.datetime "current_login_at"
     t.string   "last_login_ip"
     t.string   "current_login_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
