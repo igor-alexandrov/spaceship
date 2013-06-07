@@ -5,7 +5,7 @@
   p.lead
     | Obey and let our team do our best for your project.
 
-.row-fluid
+.row-fluid.margin-bottom-60
   - if @startup.present?
     .span6
       = render :partial => 'shared/billing_plan', :locals => { :plan => @startup }

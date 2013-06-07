@@ -1,56 +1,55 @@
-.well
-  .text_align-center
-    h2{ class="#{plan.key.to_sym == :power ? 'text-warning' : 'muted'}" }
-      = plan.title
-  hr 
-    p.text_align-center   
+.text_align-center
+  h2{ class="#{plan.key.to_sym == :power ? 'text-warning' : 'muted'}" }
+    = plan.title
+hr 
+  p.text_align-center   
+    - if plan.maximum_developers_count > 1
+      | Up to 
+      strong
+        = pluralize(plan.maximum_developers_count, 'developer')
+    - else
+      | 1 developer
+
+    br
+    - if plan.maximum_email_requests_count.present?
+      =' pluralize(plan.maximum_email_requests_count, 'email request')
+      | per month
+    - else
+      strong
+        ' Unlimited
+      | email requests
+
+    br
+    - if plan.maximum_phone_calls_count.present?
+      =' pluralize(plan.maximum_phone_calls_count, 'phone calls')
+      | per month
+    - else
+      strong
+        ' Unlimited
+      | phone calls
+
+hr
+  p.text_align-center
+    strong.fs18
+      =' number_to_currency(plan.monthly_amount, :precision => 0)
+    span.fs18  
+      | per month
       - if plan.maximum_developers_count > 1
-        | Up to 
-        strong
-          = pluralize(plan.maximum_developers_count, 'developer')
-      - else
-        | 1 developer
+        | , per developer
 
-      br
-      - if plan.maximum_email_requests_count.present?
-        =' pluralize(plan.maximum_email_requests_count, 'email request')
-        | per month
-      - else
-        strong
-          ' Unlimited
-        | email requests
+  p.text_align-center
+    a{ class="btn #{plan.key.to_sym == :power ? 'btn-success' : nil}" }        
+      | Obey!
 
-      br
-      - if plan.maximum_phone_calls_count.present?
-        =' pluralize(plan.maximum_phone_calls_count, 'phone calls')
-        | per month
-      - else
-        strong
-          ' Unlimited
-        | phone calls
-  
-  hr
-    p.text_align-center
-      strong.fs18
-        =' number_to_currency(plan.monthly_amount, :precision => 0)
-      span.fs18  
-        | per month
-        - if plan.maximum_developers_count > 1
-          | , per developer
+hr
+  p.text_align-center
+    strong.fs18
+      =' number_to_currency(plan.annual_amount, :precision => 0)
+    span.fs18  
+      | per year
+      - if plan.maximum_developers_count > 1
+        | , per developer
 
-    p.text_align-center
-      a{ class="btn #{plan.key.to_sym == :power ? 'btn-success' : nil}" }        
-        | Obey!
-
-  hr
-    p.text_align-center
-      strong.fs18
-        =' number_to_currency(plan.annual_amount, :precision => 0)
-      span.fs18  
-        | per year
-        - if plan.maximum_developers_count > 1
-          | , per developer
-
-    p.text_align-center
-      a{ class="btn #{plan.key.to_sym == :power ? 'btn-success' : nil}" }      
-        | Obey!
+  p.text_align-center
+    a{ class="btn #{plan.key.to_sym == :power ? 'btn-success' : nil}" }      
+      | Obey!
