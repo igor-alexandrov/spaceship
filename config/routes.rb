@@ -5,5 +5,7 @@ Spaceship::Application.routes.draw do
 
   get 'sign_out' => 'auth#sign_out'
 
+  post 'subscribe' => 'home#subscribe'
+
   root :to => 'home#index'
 end

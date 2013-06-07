@@ -3,6 +3,10 @@ class HomeController < ApplicationController
  
   def index
     @startup = Billing::Plan.find_by_key('startup')
-    @power = Billing::Plan.find_by_key('power')
+    @hardcore = Billing::Plan.find_by_key('hardcore')
+  end
+
+  def subscribe
+    
   end
 end

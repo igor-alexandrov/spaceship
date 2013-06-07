@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130607081635) do
+ActiveRecord::Schema.define(:version => 20130607103927) do
 
   create_table "billing_plans", :force => true do |t|
     t.string   "title"
@@ -27,6 +27,23 @@ ActiveRecord::Schema.define(:version => 20130607081635) do
   end
 
   add_index "billing_plans", ["key"], :name => "index_billing_plans_on_key", :unique => true
+
+  create_table "billing_subscriptions", :force => true do |t|
+    t.string   "type"
+    t.integer  "user_id"
+    t.integer  "plan_id"
+    t.integer  "developers_count"
+    t.integer  "trial"
+    t.date     "subscription_date"
+    t.date     "unsubscription_date"
+    t.datetime "billed_at"
+    t.date     "previous_billing_date"
+    t.date     "next_billing_date"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "billing_subscriptions", ["user_id"], :name => "index_billing_subscriptions_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"

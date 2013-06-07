@@ -3,12 +3,12 @@
     | Super awesome development team!
 
   p.lead
-    | Obey and let our team do our best for your project.
+    | Take your seat and let our team do our best for your project.
 
 .row-fluid.margin-bottom-60
   - if @startup.present?
     .span6
       = render :partial => 'shared/billing_plan', :locals => { :plan => @startup }
-  - if @power.present?    
+  - if @hardcore.present?    
     .span6
-      = render :partial => 'shared/billing_plan', :locals => { :plan => @power }
+      = render :partial => 'shared/billing_plan', :locals => { :plan => @hardcore }

@@ -15,9 +15,9 @@ startup = Billing::Plan.create do |plan|
   plan.maximum_developers_count = 1
 end
 
-startup = Billing::Plan.create do |plan|
-  plan.key = 'power'
-  plan.title = 'Power'
+hardcore = Billing::Plan.create do |plan|
+  plan.key = 'hardcore'
+  plan.title = 'Hardcore'
   plan.trial = 10
 
   plan.monthly_amount = 4000

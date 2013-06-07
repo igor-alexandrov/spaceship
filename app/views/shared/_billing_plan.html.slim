@@ -1,5 +1,5 @@
 .text_align-center
-  h2{ class="#{plan.key.to_sym == :power ? 'text-warning' : 'muted'}" }
+  h2{ class="#{plan.key.to_sym == :hardcore ? 'text-error' : 'muted'}" }
     = plan.title
 hr 
   p.text_align-center   
@@ -37,9 +37,11 @@ hr
       - if plan.maximum_developers_count > 1
         | , per developer
 
-  p.text_align-center
-    a{ class="btn #{plan.key.to_sym == :power ? 'btn-success' : nil}" }        
-      | Obey!
+  .text_align-center
+    = form_tag subscribe_path, :method => :post do
+      = hidden_field_tag 'plan', plan.key
+      = hidden_field_tag 'type', 'monthly'
+      = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"    
 
 hr
   p.text_align-center
@@ -50,6 +52,8 @@ hr
       - if plan.maximum_developers_count > 1
         | , per developer
 
-  p.text_align-center
-    a{ class="btn #{plan.key.to_sym == :power ? 'btn-success' : nil}" }      
-      | Obey!
+  .text_align-center
+    = form_tag subscribe_path, :method => :post do
+      = hidden_field_tag 'plan', plan.key
+      = hidden_field_tag 'type', 'annual'
+      = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"
