@@ -1,6 +1,8 @@
 # coding: UTF-8
 
-class Subscription::Base < ActiveRecord::Base
+class Billling::Subscription::Base < ActiveRecord::Base
+  self.table_name = 'billing_subscriptions'
+
   belongs_to :user, :inverse_of => :subscription
   belongs_to :plan, :inverse_of => :subscriptions
 
@@ -72,11 +74,11 @@ class Subscription::Base < ActiveRecord::Base
   end
   
   def monthly?
-    self.forced_type.present? ? self.forced_type == :monthly : self.is_a?(Subscription::Monthly)    
+    self.forced_type.present? ? self.forced_type == :monthly : self.is_a?(Billling::Subscription::Monthly)    
   end
     
   def annual?    
-    self.forced_type.present? ? self.forced_type == :annual : self.is_a?(Subscription::Annual)    
+    self.forced_type.present? ? self.forced_type == :annual : self.is_a?(Billling::Subscription::Annual)    
   end    
           
   def amount_unspent
@@ -321,16 +323,6 @@ class Subscription::Base < ActiveRecord::Base
   
   def force_state_services!
     self.state_services.each{ |s| s.forced! }
-  end
-
-  def with_disabled_paper_trail_for_services(&block)
-    Billing::StateService.paper_trail_off
-    Billing::AdditionalService::Base.paper_trail_off
-
-    yield self if block_given?
-
-    Billing::StateService.paper_trail_on
-    Billing::AdditionalService::Base.paper_trail_on
   end
   
   def next_discounts_count=(value)

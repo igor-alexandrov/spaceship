@@ -1,4 +1,8 @@
-class Plan < ActiveRecord::Base
+# coding: UTF-8
+
+class Billing::Plan < ActiveRecord::Base
+  self.table_name = 'billing_plans'
+
   validates :title, :presence => true
   validates :key, :presence => true, :uniqueness => true
 
