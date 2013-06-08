@@ -1,2 +1,50 @@
 = render :partial => 'shared/promo'
 = render :partial => 'shared/navbar'
+
+table.table
+  thead
+    tr
+      th
+        | #
+      th
+      th        
+      th
+        | Amount      
+      th
+        | Issue date
+      th        
+  tbody
+    - @invoices.each_with_index do |i, index|
+      tr
+        td.align-middle
+          = index + 1
+        td.align-middle.text_align-center.span1
+          - if !i.paid?
+            i.icon-exclamation-sign
+        td.align-middle
+          = i.title
+          br
+          - if i.paid?
+            | paid at: 
+            = i.paid_at.strftime('%e %b %Y')
+          - else
+            strong
+              | unpaid
+            span
+              | , due date: 
+              = i.due_date.strftime('%e %b %Y')
+        td.align-middle
+          - if i.paid?
+            span
+              = number_to_currency(i.amount)
+          - else
+            strong
+              = number_to_currency(i.amount)
+        td.align-middle
+          = i.issue_date.strftime('%e %b %Y')
+        td.align-middle
+            =' link_to 'Details', invoice_path(i), :class => "btn small small-height fancybox fancybox.ajax"
+        td.align-middle
+            =' link_to 'Pay', pay_invoice_path(i), :class => 'btn primary small small-height fancybox fancybox.ajax'
+                  
+= will_paginate @invoices

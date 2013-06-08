@@ -2,7 +2,10 @@
   .navbar-inner    
     ul.nav
       li{ class="#{'active' if params[:controller] == 'home'}" }
-        = link_to 'Home', root_path
+        = link_to root_path do
+          i.icon-home
+          |  Home
+          
       li{ class="#{'active' if params[:controller] == 'invoices'}" }
         = link_to invoices_path do
           | Invoices        
