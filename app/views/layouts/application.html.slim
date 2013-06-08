@@ -10,8 +10,12 @@ html
     = csrf_meta_tag
     
   body
+    .navbar.navbar-inverse.navbar-fixed-top
+      .navbar-inner 
+        p.text_align-center.margin-top-10
+          | This is a demo application that illustrates how pre-paid billing for SaaS application works. Try to hire JetRockets for a month or a year.
     .container-narrow
-      .page-header
+      .header
         ul.nav.nav-pills.pull-right.margin-top-10
           li{ class="#{'active' if params[:controller] == 'home' && params[:action] == 'about'}" }
             = link_to 'About', '#'
@@ -19,7 +23,7 @@ html
             li
               = link_to 'Sign Out', sign_out_path
 
-        = link_to 'http://www.jetrockets.ru', :target => '_blank' do
+        = link_to 'http://www.jetrockets.ru/en', :target => '_blank' do
           = image_tag 'http://www.jetrockets.ru/public/logo.png', :title => 'JetRockets: разработка на Ruby on Rails'
       
       = yield
