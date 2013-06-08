@@ -1,6 +1,6 @@
 # Be sure to restart your server when you modify this file.
 
-Spaceship::Application.config.session_store :cookie_store, key: '_Spaceship_session'
+Spaceship::Application.config.session_store :cookie_store, key: '_spaceship_session'
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information

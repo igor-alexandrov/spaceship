@@ -1,5 +1,6 @@
 class AuthController < ApplicationController
-  before_filter :require_no_user
+  before_filter :require_no_user, :except => :sign_out
+  before_filter :require_user, :only => :sign_out
   
   def index
     @user = User.new
@@ -16,6 +17,12 @@ class AuthController < ApplicationController
       @user = User.new
       render :action => :index
     end    
+  end
+
+  def sign_out
+    Session.find(:public).destroy
+    
+    redirect_to auth_url
   end
 
   def sign_up
