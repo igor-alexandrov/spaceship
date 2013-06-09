@@ -10,13 +10,16 @@ html
     = csrf_meta_tag
     
   body
+    a href="https://github.com/igor-alexandrov/spaceship" target='_blank'
+      img alt="Fork me on GitHub" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" style="position: absolute; top: 40px; right: 0; border: 0;"
+
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner 
         p.text_align-center.margin-top-10
           | This is a demo application that illustrates how pre-paid billing for SaaS application works. Try to hire JetRockets for a month or a year.
     .container-narrow
       .header
-        ul.nav.nav-pills.pull-right.margin-top-10
+        ul.nav.nav-pills.pull-right.margin-top-15
           li{ class="#{'active' if params[:controller] == 'home' && params[:action] == 'about'}" }
             = link_to 'About', '#'
           - if current_user.present?
