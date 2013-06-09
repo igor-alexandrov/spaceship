@@ -37,11 +37,16 @@ html
 
       = yield
       hr
-      .footer        
-          p 
+      .footer 
+        .pull-left
+          p
             = link_to 'Igor Alexandrov', 'https://github.com/igor-alexandrov', :target => '_blank'
             span.muted
               ' ,
             =' link_to 'Alexey Solilin', 'https://github.com/solilin', :target => '_blank'
-            span.muted
-              | 2013
+        .pull-right
+          p
+            ' ©
+            =' link_to 'JetRockets', 'http://www.jetrockets.ru/en/'
+            span.muted 
+              | 2013    
