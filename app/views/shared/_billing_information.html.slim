@@ -1,10 +1,21 @@
-.row-fluid.margin-bottom-30
-  .pull-left
+.row-fluid.margin-bottom-20
+  .pull-left.internal_credit.align-middle
     ' Internal credit:
     strong
       = number_to_currency current_user.internal_credit
-  .pull-right
+  .pull-right.billing_card
     - if current_user.billing_card.present?
+      - if current_user.billing_card.image_url.present?
+        =' image_tag current_user.billing_card.image_url
+      - else
+        =' image_tag current_user.billing_card.card_type
+
+      =' current_user.billing_card.masked_number
+      ' ( exp:
+      = current_user.billing_card.expiration_date.strftime('%m/%Y')
+      ' )
+      ' is assigned
+      = link_to 'Remove', card_path(current_user.billing_card), :method => :delete, :class => 'btn btn-small'
     - else
       ' Credit card is not assigned
       = link_to 'Assign…', new_card_path, :data => { :toggle => 'modal', :target => '#' }, :class => 'btn btn-small'

@@ -40,6 +40,10 @@ class Billing::Card < ActiveRecord::Base
     self.create_braintree_card    
   end
 
+  before_destroy do
+    Braintree::CreditCard.delete(self.token)
+  end
+
   def ensure_braintree_customer_and_save
     if !(self.user.create_braintree_customer && self.user.save)
       self.errors.add(:base, self.user.errors.first)
@@ -61,7 +65,13 @@ class Billing::Card < ActiveRecord::Base
       self.number ||= ' ' * 16
       self.number[4 * (i-1) .. (4 * i) - 1] = value
     end    
-  end  
+  end
+
+  def masked_number
+    if self.bin.present?
+      self.bin[0..3] + '–' + self.bin[4..5] + "xx–xxxx–xxxx"
+    end
+  end
   
 protected
   
