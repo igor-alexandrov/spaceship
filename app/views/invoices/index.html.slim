@@ -44,7 +44,7 @@ table.table
         td.align-middle
           = i.issue_date.strftime('%e %b %Y')
         td.align-middle
-            =' link_to 'Details…', invoice_path(i), :class => "btn btn-small"
+            =' link_to 'Details…', invoice_path(i), :data => { :toggle => 'modal', :target => '#' }, :class => "btn btn-small"
         td.align-middle
             =' link_to 'Pay…', pay_invoice_path(i), :class => 'btn btn-small btn-success'
                   

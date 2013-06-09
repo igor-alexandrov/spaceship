@@ -1,21 +1,30 @@
-.row-fluid.margin-bottom-20
-  .pull-left.internal_credit.align-middle
+.row-fluid.margin-bottom-10
+  .pull-left
     ' Internal credit:
     strong
       = number_to_currency current_user.internal_credit
-  .pull-right.billing_card
-    - if current_user.billing_card.present?
-      - if current_user.billing_card.image_url.present?
-        =' image_tag current_user.billing_card.image_url
+  .pull-right
+    - if current_user.billing_subscription.present?
+      - if current_user.billing_subscription.trial?
+        | Trial until:
       - else
-        =' image_tag current_user.billing_card.card_type
+        | Next billed on:  
+      strong
+        = l(current_user.billing_subscription.next_billing_date, :format => :human)
 
-      =' current_user.billing_card.masked_number
-      ' ( exp:
-      = current_user.billing_card.expiration_date.strftime('%m/%Y')
-      ' )
-      ' is assigned
-      = link_to 'Remove', card_path(current_user.billing_card), :method => :delete, :class => 'btn btn-small'
+.row-fluid.margin-bottom-20
+  - if current_user.billing_card.present?
+    - if current_user.billing_card.image_url.present?
+      =' image_tag current_user.billing_card.image_url
     - else
-      ' Credit card is not assigned
-      = link_to 'Assign…', new_card_path, :data => { :toggle => 'modal', :target => '#' }, :class => 'btn btn-small'
+      =' image_tag current_user.billing_card.card_type
+
+    =' current_user.billing_card.masked_number
+    ' ( exp:
+    = current_user.billing_card.expiration_date.strftime('%m/%Y')
+    ' )
+    ' is assigned
+    = link_to 'Remove', card_path(current_user.billing_card), :method => :delete, :class => 'btn btn-small'
+  - else
+    ' Credit card is not assigned
+    = link_to 'Assign…', new_card_path, :data => { :toggle => 'modal', :target => '#' }, :class => 'btn btn-small'
