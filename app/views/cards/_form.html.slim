@@ -1,0 +1,25 @@
+javascript:
+  $('@modal @number').groupinputs();
+
+= form_for @card, :as => 'card', :url => cards_path, :remote => true, :html => { :method => :post, :id => dom_id(@card), :class => 'form-horizontal' } do |f|
+  = render :partial => 'shared/errors', :locals => { :object => @card }
+  .control-group
+    = f.label :first_name, :class => 'control-label'
+    .controls
+      = f.text_field :first_name, :class => 'input-medium'
+  .control-group
+    = f.label :last_name, :class => 'control-label'
+    .controls
+      = f.text_field :last_name, :class => 'input-medium'
+  .control-group
+    = f.label :number, :class => 'control-label'
+    .controls
+      =' f.text_field :number_part_1, :maxlength => 4, :class => 'input-xsmall', :role => 'number'
+      =' f.text_field :number_part_2, :maxlength => 4, :class => 'input-xsmall', :role => 'number'
+      =' f.text_field :number_part_3, :maxlength => 4, :class => 'input-xsmall', :role => 'number'
+      = f.text_field :number_part_4, :maxlength => 4, :class => 'input-xsmall', :role => 'number'
+
+  .control-group
+    = f.label :expiration_date, :class => 'control-label'
+    .controls      
+      = f.date_select :expiration_date, { :discard_day => true, :add_month_numbers => true, :start_year => Date.today.year, :end_year => Date.today.year + 6, :order => [ :month, :year ] } , { :class => 'span2' }

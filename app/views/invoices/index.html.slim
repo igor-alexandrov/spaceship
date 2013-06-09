@@ -1,5 +1,6 @@
 = render :partial => 'shared/promo'
 = render :partial => 'shared/navbar'
+= render :partial => 'shared/billing_information'
 
 table.table
   thead
@@ -43,8 +44,8 @@ table.table
         td.align-middle
           = i.issue_date.strftime('%e %b %Y')
         td.align-middle
-            =' link_to 'Details', invoice_path(i), :class => "btn small small-height fancybox fancybox.ajax"
+            =' link_to 'Details…', invoice_path(i), :class => "btn btn-small"
         td.align-middle
-            =' link_to 'Pay', pay_invoice_path(i), :class => 'btn primary small small-height fancybox fancybox.ajax'
+            =' link_to 'Pay…', pay_invoice_path(i), :class => 'btn btn-small btn-success'
                   
 = will_paginate @invoices

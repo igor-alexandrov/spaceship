@@ -1,5 +1,6 @@
 = render :partial => 'shared/promo'
 = render :partial => 'shared/navbar'
+= render :partial => 'shared/billing_information'
 
 - if @subscription.present?
   = render :partial => 'shared/errors', :locals => { :object => @subscription }

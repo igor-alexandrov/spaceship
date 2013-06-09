@@ -1,0 +1,12 @@
+.modal-header
+  button.close{ data-dismiss="modal" }
+    | &times;
+  h3
+    | Assign Credit Card
+.modal-body
+  = render :partial => 'cards/form'
+.modal-footer
+  a.btn.btn-success onclick="$('.modal-body > form').submit();"
+    | Save
+  a.btn{ data-dismiss="modal" }
+    | Cancel

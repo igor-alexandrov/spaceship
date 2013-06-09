@@ -1,0 +1,10 @@
+.row-fluid.margin-bottom-30
+  .pull-left
+    ' Internal credit:
+    strong
+      = number_to_currency current_user.internal_credit
+  .pull-right
+    - if current_user.billing_card.present?
+    - else
+      ' Credit card is not assigned
+      = link_to 'Assign…', new_card_path, :data => { :toggle => 'modal', :target => '#' }, :class => 'btn btn-small'

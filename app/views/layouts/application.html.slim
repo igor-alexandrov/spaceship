@@ -11,7 +11,7 @@ html
     
   body
     a href="https://github.com/igor-alexandrov/spaceship" target='_blank'
-      img alt="Fork me on GitHub" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" style="position: absolute; top: 40px; right: 0; border: 0;"
+      img alt="Fork me on GitHub" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" style="position: fixed; top: 0; right: 0; border: 0; z-index: 1050;"
 
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner 
@@ -29,6 +29,12 @@ html
         = link_to 'http://www.jetrockets.ru/en', :target => '_blank' do
           = image_tag 'http://www.jetrockets.ru/public/logo.png', :title => 'JetRockets: разработка на Ruby on Rails'
       
+      - if flash.present?
+        .flash{ role='flash' }
+          - flash.each do |key, message|
+            div{ class="alert alert-#{key}" data-status="#{key}" data-timeout="#{ key.to_s == 'success' ? 15 : 30 }" }
+              = message
+
       = yield
       hr
       .footer        

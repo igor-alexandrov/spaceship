@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-
 gem 'pg'
 
 gem 'slim'
+gem 'wiserespond'
 
 gem 'authlogic'
 gem 'settingslogic'
@@ -12,10 +12,9 @@ gem 'settingslogic'
 gem 'default_value_for'
 
 gem 'squeel'
-
 gem 'will_paginate'
 
-
+gem 'braintree'
 
 # Gems used only for assets and not required
 # in production environments by default.

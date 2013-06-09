@@ -11,7 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130607224056) do
+ActiveRecord::Schema.define(:version => 20130609130052) do
+
+  create_table "billing_cards", :force => true do |t|
+    t.integer "user_id",         :null => false
+    t.string  "first_name",      :null => false
+    t.string  "last_name",       :null => false
+    t.date    "expiration_date", :null => false
+    t.string  "token",           :null => false
+    t.string  "card_type",       :null => false
+    t.string  "bin",             :null => false
+    t.string  "image_url"
+  end
+
+  add_index "billing_cards", ["user_id"], :name => "index_billing_cards_on_user_id"
 
   create_table "billing_invoices", :force => true do |t|
     t.integer  "user_id"
@@ -88,9 +101,9 @@ ActiveRecord::Schema.define(:version => 20130607224056) do
     t.string   "password_salt"
     t.string   "first_name"
     t.string   "last_name"
-    t.string   "persistence_token",                                                :null => false
-    t.string   "perishable_token",                                                 :null => false
-    t.integer  "login_count",                                     :default => 0,   :null => false
+    t.string   "persistence_token",                                                    :null => false
+    t.string   "perishable_token",                                                     :null => false
+    t.integer  "login_count",                                         :default => 0,   :null => false
     t.datetime "last_request_at"
     t.datetime "last_login_at"
     t.datetime "current_login_at"
@@ -98,7 +111,8 @@ ActiveRecord::Schema.define(:version => 20130607224056) do
     t.string   "current_login_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "available_credit",  :precision => 8, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "internal_credit",       :precision => 8, :scale => 2, :default => 0.0, :null => false
+    t.integer  "braintree_customer_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

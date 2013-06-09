@@ -23,9 +23,16 @@ class User < ActiveRecord::Base
 
   delegate  :plan, :to => :billing_subscription, :allow_nil => true    
 
-  has_many :billing_invoices, :class_name => 'Billing::Invoice'
+  has_many :billing_invoices, :class_name => 'Billing::Invoice', :dependent => :delete_all
+  has_one :billing_card, :class_name => 'Billing::Card', :dependent => :destroy, :inverse_of => :user, :autosave => false
   
   attr_accessor :locked_credit
+
+  before_validation(:on => :update) do
+    if self.email_changed? || self.first_name_changed? || self.last_name_changed?
+      self.update_braintree_customer
+    end
+  end
 
   def invoice!(full_amount, title, options={})
     options.reverse_merge!({
@@ -44,11 +51,11 @@ class User < ActiveRecord::Base
 
   def to_credit(amount)           
     success = transaction do
-      self.lock_available_credit!
-      self.available_credit += amount.abs      
+      self.lock_internal_credit!
+      self.internal_credit += amount.abs      
       self.save(:validate => false)            
     end
-    amount = (self.available_credit - self.locked_credit).abs
+    amount = (self.internal_credit - self.locked_credit).abs
     
     self.billing_transactions.create(
       :action => 'credit_replenishment',
@@ -61,11 +68,11 @@ class User < ActiveRecord::Base
   
   def from_credit(amount)        
     success = transaction do
-      self.lock_available_credit!
-      self.available_credit < amount.abs ? self.available_credit = 0 : self.available_credit -= amount.abs        
+      self.lock_internal_credit!
+      self.internal_credit < amount.abs ? self.internal_credit = 0 : self.internal_credit -= amount.abs        
       self.save(:validate => false)
     end
-    amount = (self.locked_credit - self.available_credit).abs
+    amount = (self.locked_credit - self.internal_credit).abs
     
     self.billing_transactions.create(
       :action => 'credit_withdrawal',
@@ -82,11 +89,41 @@ class User < ActiveRecord::Base
     self.billing_subscription.class.default_type == type.to_sym
   end
 
+  def create_braintree_customer
+    return true if self.braintree_customer_id.present?
+
+    result = Braintree::Customer.create(self.braintree_customer_fields)
+    if result.success?  
+      self.braintree_customer_id = result.customer.id      
+    else
+      self.errors.add(:base, result.errors.first.message)
+      return false
+    end
+  end
+
+  def update_braintree_customer
+    return true if self.braintree_customer_id.blank?
+
+    result = Braintree::Customer.update(self.braintree_customer_id, self.braintree_customer_fields)
+    if !result.success?      
+      self.errors.add(:base, result.errors.first.message)
+      return false
+    end
+  end
+
 protected
+
+  def braintree_customer_fields
+    {
+      :first_name => self.first_name,
+      :last_name => self.last_name,
+      :email => self.email      
+    }
+  end
   
-  def lock_available_credit!
+  def lock_internal_credit!
     self.lock!
-    self.locked_credit = self.available_credit
+    self.locked_credit = self.internal_credit
   end
 
 end
