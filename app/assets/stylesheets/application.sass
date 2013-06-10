@@ -41,6 +41,12 @@ form
   .error
     +formFieldState($errorText, $errorText, $errorBackground)
 
+// Fix for Firefox submit tag height
+body:not(:-moz-handler-blocked)
+  input.btn
+    height: $baseLineHeight !important
+    -moz-box-sizing: content-box
+  
 .input-xsmall
   width: 35px
 

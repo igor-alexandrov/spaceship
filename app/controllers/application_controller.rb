@@ -47,6 +47,13 @@ protected
     redirect_to(auth_url) and return false unless current_user
     return true
   end
+
+  def require_user_with_billing_card
+    return false if !self.require_user
+    
+    redirect_to(root_url) and return false if current_user.billing_card.blank?
+    return true
+  end
   
   def require_no_user
     redirect_to(root_url) and return false if current_user

@@ -23,8 +23,9 @@ class User < ActiveRecord::Base
 
   delegate  :plan, :to => :billing_subscription, :allow_nil => true    
 
-  has_many :billing_invoices, :class_name => 'Billing::Invoice', :dependent => :delete_all
-  has_one :billing_card, :class_name => 'Billing::Card', :dependent => :destroy, :inverse_of => :user, :autosave => false
+  has_many :billing_invoices, :class_name => 'Billing::Invoice', :dependent => :destroy, :inverse_of => :user
+  has_many :billing_transactions, :class_name => 'Billing::Transaction', :dependent => :destroy, :inverse_of => :user
+  has_one :billing_card, :class_name => 'Billing::Card', :dependent => :destroy, :inverse_of => :user
   
   attr_accessor :locked_credit
 
@@ -58,7 +59,7 @@ class User < ActiveRecord::Base
     amount = (self.internal_credit - self.locked_credit).abs
     
     self.billing_transactions.create(
-      :action => 'credit_replenishment',
+      :action => 'internal_credit_replenishment',
       :amount => amount,
       :success => success    
     ) if amount != 0       
@@ -75,7 +76,7 @@ class User < ActiveRecord::Base
     amount = (self.locked_credit - self.internal_credit).abs
     
     self.billing_transactions.create(
-      :action => 'credit_withdrawal',
+      :action => 'internal_credit_withdrawal',
       :amount => amount,
       :success => success    
     ) if amount != 0       
@@ -109,6 +110,21 @@ class User < ActiveRecord::Base
       self.errors.add(:base, result.errors.first.message)
       return false
     end
+  end
+
+  def purchase!(amount_or_invoice, options = {})
+    amount, invoice = amount_or_invoice.is_a?(Billing::Invoice) ? [amount_or_invoice.amount, amount_or_invoice] : [amount_or_invoice, nil]
+      
+    self.billing_transactions.create!(
+      :invoice => invoice,
+      :action => 'braintree_payment',
+      :amount => amount
+    )
+  end
+
+  def void(transaction_or_id)
+    id = transaction_or_id.is_a?(Billing::Transaction) ? transaction_or_id.id : transaction_or_id
+    self.billing_transactions.find(id).void
   end
 
 protected
