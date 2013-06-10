@@ -1,73 +1,74 @@
-.text_align-center
-  h2{ class="#{plan.key.to_sym == :hardcore ? 'text-error' : 'muted'}" }
+.billint_plan.span6
+  h2.billint_plan__title{ class="#{plan.key.to_sym == :hardcore ? 'text-error' : 'muted'}" }
     = plan.title
-hr 
-  p.text_align-center   
-    - if plan.maximum_developers_count > 1
-      | Up to 
-      strong
-        = pluralize(plan.maximum_developers_count, 'developer')
-    - else
-      | 1 developer
 
-    br
-    - if plan.maximum_email_requests_count.present?
-      =' pluralize(plan.maximum_email_requests_count, 'email request')
-      | per month
-    - else
-      strong
-        ' Unlimited
-      | email requests
+  ul.billint_plan__features
+    li
+      - if plan.maximum_developers_count > 1
+        | Up to 
+        strong
+          = pluralize(plan.maximum_developers_count, 'developer')
+      - else
+        | 1 developer
 
-    br
-    - if plan.maximum_phone_calls_count.present?
-      =' pluralize(plan.maximum_phone_calls_count, 'phone call')
-      | per month
-    - else
-      strong
-        ' Unlimited
-      | phone calls
+    li
+      - if plan.maximum_email_requests_count.present?
+        =' pluralize(plan.maximum_email_requests_count, 'email request')
+        | per month
+      - else
+        strong
+          ' Unlimited
+        | email requests
+
+    li
+      - if plan.maximum_phone_calls_count.present?
+        =' pluralize(plan.maximum_phone_calls_count, 'phone call')
+        | per month
+      - else
+        strong
+          ' Unlimited
+        | phone calls
 
     - if plan.trial.present? && plan.trial > 0
-      br
+      li
         =' pluralize(plan.trial, 'day')
         strong
-         | trial   
+         | trial
 
-hr
-  p.text_align-center
-    strong.fs18
-      =' number_to_currency(plan.monthly_amount, :precision => 0)
-    span.fs18  
-      | per month
-      - if plan.maximum_developers_count > 1
-        | , per developer
-
-  .text_align-center
-    - unless current_user.subscribed_to?(plan, :monthly)
-      = form_tag subscribe_path, :method => :post do
-        = hidden_field_tag '[subscription]plan', plan.key
-        = hidden_field_tag '[subscription]type', 'monthly'
-        = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"    
-    - else
+  .billint_plan__price
+    p
       strong
-        | Your current plan
+        =' number_to_currency(plan.monthly_amount, :precision => 0)
+      span
+        | per month
+        - if plan.maximum_developers_count > 1
+          | , per developer
 
-hr
-  p.text_align-center
-    strong.fs18
-      =' number_to_currency(plan.annual_amount, :precision => 0)
-    span.fs18  
-      | per year
-      - if plan.maximum_developers_count > 1
-        | , per developer
+    .text_align-center
+      - unless current_user.subscribed_to?(plan, :monthly)
+        = form_tag subscribe_path, :method => :post, :class => 'margin-none' do
+          = hidden_field_tag '[subscription]plan', plan.key
+          = hidden_field_tag '[subscription]type', 'monthly'
+          = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"    
+      - else
+        strong
+          | Your current plan
 
-  .text_align-center
-    - unless current_user.subscribed_to?(plan, :annual)
-      = form_tag subscribe_path, :method => :post do
-        = hidden_field_tag '[subscription]plan', plan.key
-        = hidden_field_tag '[subscription]type', 'annual'
-        = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"
-    - else
+  .billint_plan__price
+    p
       strong
-        | Your current plan
+        =' number_to_currency(plan.annual_amount, :precision => 0)
+      span
+        | per year
+        - if plan.maximum_developers_count > 1
+          | , per developer
+
+    .text_align-center
+      - unless current_user.subscribed_to?(plan, :annual)
+        = form_tag subscribe_path, :method => :post, :class => 'margin-none' do
+          = hidden_field_tag '[subscription]plan', plan.key
+          = hidden_field_tag '[subscription]type', 'annual'
+          = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"
+      - else
+        strong
+          | Your current plan

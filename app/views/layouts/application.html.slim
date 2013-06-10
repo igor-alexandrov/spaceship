@@ -2,7 +2,7 @@ doctype html
 html
   head
     = stylesheet_link_tag :application
-    = javascript_include_tag :application    
+    = javascript_include_tag :application
 
     title
       | Spaceship by JetRockets
@@ -17,7 +17,7 @@ html
       .navbar-inner 
         p.text_align-center.margin-top-10
           | This is a demo application that illustrates how pre-paid billing for SaaS application works. Try to hire JetRockets for a month or a year.
-    .container-narrow
+    .container-narrow{ role='container' }
       .header
         ul.nav.nav-pills.pull-right.margin-top-15
           li{ class="#{'active' if params[:controller] == 'home' && params[:action] == 'about'}" }
@@ -35,9 +35,19 @@ html
             div{ class="alert alert-#{key}" data-status="#{key}" data-timeout="#{ key.to_s == 'success' ? 15 : 30 }" }
               = message
 
-      = yield
-      hr
-      .footer 
+      .jumbotron
+        h1
+          | Super awesome development team!
+
+        p.lead
+          | Take your seat and let our team do our best for your project.
+
+      .content
+        .content__inner{ role='content' }
+          = yield
+        = image_tag 'preloader.gif', :role => 'preloader', :class => 'content__preloader'
+
+      .footer
         .pull-left
           p
             = link_to 'Igor Alexandrov', 'https://github.com/igor-alexandrov', :target => '_blank'
@@ -46,7 +56,8 @@ html
             =' link_to 'Alexey Solilin', 'https://github.com/solilin', :target => '_blank'
         .pull-right
           p
-            ' ©
+            span.muted 
+              ' ©
             =' link_to 'JetRockets', 'http://www.jetrockets.ru/en/'
             span.muted 
               | 2013    
