@@ -1,10 +1,10 @@
 development:
-   adapter: postgresql
-   host: localhost
-   port: 5432
-   database: spaceship_development
-   username: postgres
-   password: root
-   schema_search_path: public
-   encoding: utf8
-   pool: 10
+  adapter: postgresql
+  host: localhost
+  port: 5432
+  database: spaceship_development
+  username: postgres
+  password: root
+  schema_search_path: public
+  encoding: utf8
+  pool: 10
