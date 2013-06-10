@@ -1,3 +1,5 @@
+= render :partial => 'shared/errors', :locals => { :object => @session }
+= render :partial => 'shared/errors', :locals => { :object => @user }
 
 .row-fluid
   .span5
@@ -22,8 +24,7 @@
   .span5    
     = form_for @user, :url => sign_up_path do |f|
       fieldset
-        .row
-        legend Sign Up        
+        legend Sign Up
         .control-group
           .row-fluid
             .controls            

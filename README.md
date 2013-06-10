@@ -1,0 +1,1 @@
+[Demo application](http://spaceship.dev.jetrockets.ru) for DevConf 2013
