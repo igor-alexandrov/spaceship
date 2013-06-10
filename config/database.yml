@@ -3,8 +3,8 @@ development:
    host: localhost
    port: 5432
    database: spaceship_development
-   username: spaceship
-   password: dev
+   username: postgres
+   password: root
    schema_search_path: public
    encoding: utf8
    pool: 10

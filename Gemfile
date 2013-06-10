@@ -5,6 +5,7 @@ gem 'pg'
 
 gem 'slim'
 gem 'wiserespond'
+gem 'wiselinks'
 
 gem 'authlogic'
 gem 'settingslogic'

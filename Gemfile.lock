@@ -118,6 +118,7 @@ GEM
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
     will_paginate (3.0.4)
+    wiselinks (0.6.3)
     wiserespond (1.0.1)
       rails (>= 3.0.0)
 
@@ -139,4 +140,5 @@ DEPENDENCIES
   squeel
   uglifier (>= 1.0.3)
   will_paginate
+  wiselinks
   wiserespond

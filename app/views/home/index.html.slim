@@ -1,14 +1,11 @@
-= render :partial => 'shared/promo'
 = render :partial => 'shared/navbar'
 = render :partial => 'shared/billing_information'
 
 - if @subscription.present?
   = render :partial => 'shared/errors', :locals => { :object => @subscription }
 
-.row-fluid.margin-bottom-60
+.plans__list.row-fluid
   - if @startup.present?
-    .span6
-      = render :partial => 'shared/billing_plan', :locals => { :plan => @startup }
+    = render :partial => 'shared/billing_plan', :locals => { :plan => @startup }
   - if @hardcore.present?    
-    .span6
-      = render :partial => 'shared/billing_plan', :locals => { :plan => @hardcore }
+    = render :partial => 'shared/billing_plan', :locals => { :plan => @hardcore }

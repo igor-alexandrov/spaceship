@@ -2,14 +2,14 @@
   .navbar-inner    
     ul.nav
       li{ class="#{'active' if params[:controller] == 'home'}" }
-        = link_to root_path do
+        = link_to root_path, 'data-push' => true do
           i.icon-home
           |  Home
           
       li{ class="#{'active' if params[:controller] == 'invoices'}" }
-        = link_to invoices_path do
+        = link_to invoices_path, 'data-push' => true  do
           | Invoices        
           span.badge{ class="#{ current_user.billing_invoices.unpaid.count > 0 ? 'badge-important' : 'badge-success' }" }
             = current_user.billing_invoices.unpaid.count
       li{ class="#{'active' if params[:controller] == 'transactions'}" }
-        = link_to 'Transactions', transactions_path
+        = link_to 'Transactions', transactions_path, 'data-push' => true

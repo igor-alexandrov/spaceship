@@ -1,7 +1,24 @@
 @import "bootstrap"
 @import "_helpers"
 
+.content
+  position: relative
+.content__inner
+  &.translucent
+    +opacity(25)
+
+.content__preloader
+  position: absolute
+  display: none
+  z-index: 900
+  top: 80px
+  left: 50%
+  margin-left: -32px
+
+
 // Ovveride bootstrap
+a, input, select
+  outline: none!important
 
 .navbar-inverse
   color: #fff
@@ -52,3 +69,25 @@ body:not(:-moz-handler-blocked)
 
 .billing_card
   line-height: 40px  
+
+// Billing plans
+.billint_plan
+  text-align: center
+.billint_plan__title
+  padding: 0 0 10px
+  border-bottom: 1px solid $hrBorder
+.billint_plan__features
+  margin: 0
+  padding: 5px 0 15px
+  list-style: none
+  border-bottom: 1px solid $hrBorder
+.billint_plan__price
+  min-height: 60px
+  padding: 20px 0
+  border-bottom: 1px solid $hrBorder
+
+// Footer
+.footer
+  margin-top: 80px
+  padding: 20px 0 40px
+  border-top: 1px solid $hrBorder
