@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130609130052) do
+ActiveRecord::Schema.define(:version => 20130610055000) do
 
   create_table "billing_cards", :force => true do |t|
     t.integer "user_id",         :null => false
@@ -81,14 +81,16 @@ ActiveRecord::Schema.define(:version => 20130609130052) do
     t.integer  "invoice_id"
     t.integer  "card_id"
     t.string   "action"
-    t.decimal  "amount",        :precision => 8, :scale => 2
-    t.boolean  "success"
-    t.string   "authorization"
-    t.string   "message"
-    t.text     "params"
+    t.decimal  "amount",                       :precision => 8, :scale => 2
     t.boolean  "refunded"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.datetime "created_at",                                                 :null => false
+    t.datetime "updated_at",                                                 :null => false
+    t.boolean  "success"
+    t.string   "provider_id"
+    t.string   "status"
+    t.string   "processor_authorization_code"
+    t.integer  "processor_response_code"
+    t.string   "processor_response_text"
   end
 
   add_index "billing_transactions", ["card_id"], :name => "index_billing_transactions_on_card_id"

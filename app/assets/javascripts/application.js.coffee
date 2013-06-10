@@ -8,7 +8,13 @@
 #= require plugins/_jquery.groupinputs
 
 $(document).ready ->
-  $("[data-toggle='modal']").on('click'
+  $("a@disabled").on('click'
+    (e) ->
+      e.preventDefault()
+      false
+  )
+
+  $("a[data-toggle='modal']").on('click'
     (e) ->
       e.preventDefault()
       url = $(this).attr("href")
@@ -22,9 +28,15 @@ $(document).ready ->
             ->
               $(this).remove()
           )
-          
+
           $("@modal input:text:visible:first").focus()
   )
 
-
-
+  $('.alert a@close').on('click',
+    (e) ->
+      e.preventDefault()
+      $(this).closest(".alert").slideUp(
+        (e) ->
+          $(this).remove()
+      )
+  )

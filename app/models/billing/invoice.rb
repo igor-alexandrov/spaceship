@@ -6,7 +6,7 @@ class Billing::Invoice < ActiveRecord::Base
     
   self.per_page = 10
     
-  belongs_to :user
+  belongs_to :user, :inverse_of => :billing_transactions
   
   has_many :transactions, :class_name => "Billing::Transaction"
   has_one :successful_transactions, :class_name => "Billing::Transaction", :conditions => { :success => true }
@@ -88,13 +88,15 @@ class Billing::Invoice < ActiveRecord::Base
   end
 
   def pay!(options = {})
-    return true if self.paid? || self.declined?
+    return true if self.paid?
 
     begin    
-      transaction_id = self.user.purchase_with_braintree(self.amount, :action => 'braintree_payment', :user => options[:user], :invoice => self)
+      transaction = self.user.purchase!(self)
+      raise RuntimeError.new("(#{transaction.processor_response_code}) #{transaction.processor_response_text}") if !transaction.success?
+
       self.paid!
     rescue StandardError => e
-      self.user.void_with_braintree(transaction_id) if transaction_id.present?
+      self.user.void(transaction) if transaction.success?
       raise
     end
   end  

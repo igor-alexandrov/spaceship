@@ -46,6 +46,11 @@ table.table
         td.align-middle
             =' link_to 'Details…', invoice_path(i), :data => { :toggle => 'modal', :target => '#' }, :class => "btn btn-small"
         td.align-middle
-            =' link_to 'Pay…', pay_invoice_path(i), :class => 'btn btn-small btn-success'
+            - if i.unpaid?
+              = form_tag pay_invoice_path(i), :method => 'post', :style => 'margin: 0;'
+                - if current_user.billing_card.blank?
+                  = submit_tag 'Pay', :class => "btn btn-small btn-success #{'disabled' if current_user.billing_card.blank?}", :disabled => true
+                - else
+                  = submit_tag 'Pay', :class => "btn btn-small btn-success #{'disabled' if current_user.billing_card.blank?}", :data => { :confirm => "Are you sure that you want to pay #{number_to_currency(i.amount)}?" }
                   
 = will_paginate @invoices

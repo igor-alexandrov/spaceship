@@ -7,10 +7,12 @@ Spaceship::Application.routes.draw do
 
   post 'subscribe' => 'home#subscribe'
 
-  resources :invoices, :only => [:index, :show] do    
-    post :pay, :on => :member    
+  resources :invoices, :only => [:index, :show] do
+    post :pay, :on => :member
   end
+
   resources :transactions
+
   resources :cards, :only => [:new, :create, :destroy]
 
   root :to => 'home#index'
