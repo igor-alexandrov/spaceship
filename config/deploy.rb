@@ -57,7 +57,7 @@ namespace :deploy do
       chmod -R o-rwx #{release_path}
     }
   end
-  
+
   task :start, :roles => :app, :except => { :no_release => true } do 
     run "cd #{current_path} && #{try_sudo} #{unicorn_binary} -c #{unicorn_config} -E #{rails_env} -D"
   end
@@ -87,8 +87,6 @@ namespace :remote do
     }
   end  
 end
-
-after 'deploy:update_code'
 
 namespace :maintenance do
   task :start, :roles => :web do
