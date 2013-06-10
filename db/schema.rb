@@ -82,10 +82,10 @@ ActiveRecord::Schema.define(:version => 20130610055000) do
     t.integer  "card_id"
     t.string   "action"
     t.decimal  "amount",                       :precision => 8, :scale => 2
+    t.boolean  "success"
     t.boolean  "refunded"
     t.datetime "created_at",                                                 :null => false
     t.datetime "updated_at",                                                 :null => false
-    t.boolean  "success"
     t.string   "provider_id"
     t.string   "status"
     t.string   "processor_authorization_code"

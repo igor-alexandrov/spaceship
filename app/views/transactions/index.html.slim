@@ -1,2 +1,28 @@
 = render :partial => 'shared/navbar'
 = render :partial => 'shared/billing_information'
+
+- if @transactions.any?
+  table.table
+    thead
+      tr
+        th Invoice ID
+        th Action
+        th Status
+        th Amount
+        th Date
+    tbody
+      - @transactions.each_with_index do |transaction|
+        tr
+          td= transaction.invoice_id
+          td= transaction.action.titleize
+          td= transaction.status.titleize
+          td= transaction.amount
+          td= transaction.created_at.strftime('%e %b %Y')
+          
+  = will_paginate @transactions, :renderer => Spaceship::WillPaginateRenderer, :link_attributes => { 'data-push' => 'true' }
+
+- else
+  .row-fluid
+    .margin-top-20.alert.alert-info
+      strong
+        | You have no transactions.

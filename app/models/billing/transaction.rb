@@ -1,5 +1,6 @@
 class Billing::Transaction < ActiveRecord::Base
   self.table_name = 'billing_transactions'
+  self.per_page = 10
   
   ACTIONS = ['braintree_payment', 'internal_credit_replenishment', 'internal_credit_withdrawal']
 
