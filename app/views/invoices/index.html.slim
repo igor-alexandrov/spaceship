@@ -47,4 +47,4 @@ table.table
         td.align-middle
             =' link_to 'Pay…', pay_invoice_path(i), :class => 'btn btn-small btn-success'
                   
-= will_paginate @invoices
+= will_paginate @invoices, :renderer => Spaceship::WillPaginateRenderer, :link_attributes => { 'data-push' => 'true' }
