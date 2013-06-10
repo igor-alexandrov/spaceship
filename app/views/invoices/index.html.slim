@@ -1,55 +1,62 @@
 = render :partial => 'shared/navbar'
 = render :partial => 'shared/billing_information'
 
-table.table
-  thead
-    tr
-      th
-        | #
-      th
-      th        
-      th
-        | Amount      
-      th
-        | Issue date
-      th        
-  tbody
-    - @invoices.each_with_index do |i, index|
+- if @invoices.any?
+  table.table
+    thead
       tr
-        td.align-middle
-          = index + 1
-        td.align-middle.text_align-center.span1
-          - if !i.paid?
-            i.icon-exclamation-sign
-        td.align-middle
-          = i.title
-          br
-          - if i.paid?
-            | paid at: 
-            = i.paid_at.strftime('%e %b %Y')
-          - else
-            strong
-              | unpaid
-            span
-              | , due date: 
-              = i.due_date.strftime('%e %b %Y')
-        td.align-middle
-          - if i.paid?
-            span
-              = number_to_currency(i.amount)
-          - else
-            strong
-              = number_to_currency(i.amount)
-        td.align-middle
-          = i.issue_date.strftime('%e %b %Y')
-        td.align-middle
-            =' link_to 'Details…', invoice_path(i), :data => { :toggle => 'modal', :target => '#' }, :class => "btn btn-small"
-        td.align-middle
-            - if i.unpaid?
-              = form_tag pay_invoice_path(i), :method => 'post', :style => 'margin: 0;'
-                - if current_user.billing_card.blank?
-                  = submit_tag 'Pay', :class => "btn btn-small btn-success #{'disabled' if current_user.billing_card.blank?}", :disabled => true
-                - else
-                  = submit_tag 'Pay', :class => "btn btn-small btn-success #{'disabled' if current_user.billing_card.blank?}", :data => { :confirm => "Are you sure that you want to pay #{number_to_currency(i.amount)}?" }
-                  
-= will_paginate @invoices, :renderer => Spaceship::WillPaginateRenderer, :link_attributes => { 'data-push' => 'true' }
+        th
+          | #
+        th
+        th        
+        th
+          | Amount      
+        th
+          | Issue date
+        th        
+    tbody
+      - @invoices.each_with_index do |i, index|
+        tr
+          td.align-middle
+            = index + 1
+          td.align-middle.text_align-center.span1
+            - if !i.paid?
+              i.icon-exclamation-sign
+          td.align-middle
+            = i.title
+            br
+            - if i.paid?
+              | paid at: 
+              = i.paid_at.strftime('%e %b %Y')
+            - else
+              strong
+                | unpaid
+              span
+                | , due date: 
+                = i.due_date.strftime('%e %b %Y')
+          td.align-middle
+            - if i.paid?
+              span
+                = number_to_currency(i.amount)
+            - else
+              strong
+                = number_to_currency(i.amount)
+          td.align-middle
+            = i.issue_date.strftime('%e %b %Y')
+          td.align-middle
+              =' link_to 'Details…', invoice_path(i), :data => { :toggle => 'modal', :target => '#' }, :class => "btn btn-small"
+          td.align-middle
+              - if i.unpaid?
+                = form_tag pay_invoice_path(i), :method => 'post', :style => 'margin: 0;'
+                  - if current_user.billing_card.blank?
+                    = submit_tag 'Pay', :class => "btn btn-small btn-success #{'disabled' if current_user.billing_card.blank?}", :disabled => true
+                  - else
+                    = submit_tag 'Pay', :class => "btn btn-small btn-success #{'disabled' if current_user.billing_card.blank?}", :data => { :confirm => "Are you sure that you want to pay #{number_to_currency(i.amount)}?" }
+                    
+  = will_paginate @invoices, :renderer => Spaceship::WillPaginateRenderer, :link_attributes => { 'data-push' => 'true' }
+
+- else
+  .row-fluid
+    .margin-top-20.alert.alert-info
+      strong
+        | You have no invoices.
