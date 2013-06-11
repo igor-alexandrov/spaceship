@@ -36,7 +36,9 @@ class Spaceship
     $(document).off('page:done').on('page:always'
       (event, $target, status, url, data) ->
         self.initialize_modal($target)
-        self.initialize_close($target)      
+        self.initialize_close($target)
+        if(typeof(_metrika) != 'undefined')     
+          _metrika.hit(location.pathname)
     )
 
   initialize_modal: ($selector) ->
