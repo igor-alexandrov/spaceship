@@ -2,7 +2,8 @@ class HomeController < ApplicationController
   before_filter :require_user
  
   def index
-    self.fetch_plans
+    @subscription = Billing::Subscription::Base.build(params[:subscription])
+    @plans = Billing::Plan.all
   end
 
   def subscribe
@@ -11,16 +12,8 @@ class HomeController < ApplicationController
       flash[:success] = "Tariff plan was successfully changed."
       redirect_to root_path
     else
-      self.fetch_plans
+      @plans = Billing::Plan.all
       render :action => :index    
     end    
-  end
-
-protected
-  
-  def fetch_plans
-    @startup = Billing::Plan.find_by_key('startup')
-    @hardcore = Billing::Plan.find_by_key('hardcore')
-  end
-  
+  end  
 end

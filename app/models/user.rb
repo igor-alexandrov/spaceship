@@ -13,13 +13,15 @@ class User < ActiveRecord::Base
   validates :first_name, :presence => true
   validates :last_name, :presence => true  
 
+  has_many :billing_subscriptions, :class_name => 'Billing::Subscription::Base'
   has_one :billing_subscription,
     :class_name => 'Billing::Subscription::Base',
     :conditions => proc {
       ["billing_subscriptions.subscription_date <= ? AND (billing_subscriptions.unsubscription_date IS NULL OR billing_subscriptions.unsubscription_date > ?)", Date.today, Date.today]
     },
     :include => :plan,
-    :dependent => :destroy
+    :dependent => :destroy,
+    :inverse_of => :user
 
   delegate  :plan, :to => :billing_subscription, :allow_nil => true    
 

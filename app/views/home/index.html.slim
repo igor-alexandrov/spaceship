@@ -5,7 +5,6 @@
   = render :partial => 'shared/errors', :locals => { :object => @subscription }
 
 .plans__list.row-fluid
-  - if @startup.present?
-    = render :partial => 'shared/billing_plan', :locals => { :plan => @startup }
-  - if @hardcore.present?    
-    = render :partial => 'shared/billing_plan', :locals => { :plan => @hardcore }
+  - @plans.each do |plan|
+    = render :partial => 'shared/billing_plan', :locals => { :plan => plan }
+    

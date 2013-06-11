@@ -1,9 +1,11 @@
 # coding: UTF-8
 
 class Billing::Subscription::Base < ActiveRecord::Base
+  include Models::BooleanAccessor
+
   self.table_name = 'billing_subscriptions'
 
-  belongs_to :user
+  belongs_to :user, :inverse_of => :billing_subscription
   belongs_to :plan, :inverse_of => :subscriptions, :class_name => 'Billing::Plan'
 
   delegate :maximum_email_requests_count, :maximum_phone_calls_count, :maximum_developers_count, :to => :plan
@@ -19,7 +21,8 @@ class Billing::Subscription::Base < ActiveRecord::Base
   validates :subscription_date, :presence => true
   
   validates :next_billing_date, :presence => true
-  # validates_with SubscriptionValidator
+
+  validates_with Billing::SubscriptionValidator
   
   default_value_for :subscription_date do 
     Date.today
@@ -38,47 +41,48 @@ class Billing::Subscription::Base < ActiveRecord::Base
     }
   }
   
-  attr_accessible :plan, :trial, :developers_count
+  attr_accessible :trial, :developers_count, :plan_key
+
   attr_readonly :plan, :user, :developers_count
+
+  boolean_accessor :forced
   
   def self.default_type
     raise NotImplementedError, "Method 'self.default_type' is not implemented"
   end
 
-  def self.build(params)
-    if params[:plan].present? && !params[:plan].is_a?(Billing::Plan)
-      params[:plan] = Billing::Plan.find_by_key(params[:plan])
-    end
+  def self.build(params = {})    
+    !params.nil? && params.delete(:type) == 'annual' ? Billing::Subscription::Annual.new(params) : Billing::Subscription::Monthly.new(params)      
+  end
 
-    params.delete(:type) == 'annual' ? Billing::Subscription::Annual.new(params) : Billing::Subscription::Monthly.new(params)      
+  def plan_key=(value)
+    self.plan = Billing::Plan.find_by_key(value)
   end
 
   def subscribe(user, options = {})
-    options.reverse_merge!({    
-      :trial        => false,
-      :forced       => false,
-      :refund       => true
+    options.reverse_merge!({
+      :refund => true
     })
-    self.user = user
-    self.forced! if options[:forced]
-    self.inherit!(user.billing_subscription)
-    self.developers_count = options[:developers_count] if options[:developers_count].present?    
 
-    return false if self.invalid?
-    
-    transaction do
+    transaction do      
+      self.inherit(user)
+
       if user.billing_subscription.present?          
         raise ActiveRecord::Rollback if !user.billing_subscription.cancel(Date.today, :refund => options[:refund])
       end
 
-      self.save!        
+      self.user = user
+
+      self.save!
       self.bill unless self.trial?
+      return true
     end
 
   rescue => e
     puts e.message
     puts e.backtrace
 
+    user.reload
     return false
   end
 
@@ -186,16 +190,18 @@ class Billing::Subscription::Base < ActiveRecord::Base
   
   delegate :amount, :amount_params, :amount_spent, :amount_spent_params, :to => :calculator
 
-  def inherit!(subscription)  
-    return if subscription.nil?
-      
-    self.developers_count = subscription.developers_count    
+  def inherit(user)    
+    current_subscription = user.billing_subscription
 
-    if subscription.trial?
-      self.next_billing_date = subscription.next_billing_date
-      self.trial = true
+    if self.plan.present?
+      self.trial = (current_subscription.blank? || (current_subscription.present? && current_subscription.trial?)) && self.plan.present? && self.plan.trial > 0  
     end
 
+    return if current_subscription.blank?
+
+    self.developers_count ||= current_subscription.developers_count        
+    # self.next_billing_date = current_subscription.next_billing_date if subscription.trial?
+    
     # self.inherit_additional_services!(subscription)
   end
 
@@ -205,7 +211,7 @@ protected
     if self.new_record?      
       # set next billing date only if it is not predefined
       if self.next_billing_date.nil?
-        self.next_billing_date = ((self.plan.present? && self.trial) ? self.subscription_date + self.plan.trial.days : self.subscription_date)
+        self.next_billing_date = ((self.plan.present? && self.trial?) ? self.subscription_date + self.plan.trial.days : self.subscription_date)
       end
     else
       self.previous_billing_date = self.next_billing_date

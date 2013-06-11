@@ -1,11 +1,9 @@
-= render :partial => 'shared/errors', :locals => { :object => @session }
-= render :partial => 'shared/errors', :locals => { :object => @user }
-
 .row-fluid
   .span5
     = form_for @session, :url => sign_in_path do |f|
       fieldset        
         legend Sign In
+        = render :partial => 'shared/errors', :locals => { :object => @session }
         .control-group
           .controls
             = f.text_field :email, :placeholder => 'Email…', :class => 'input-xlarge'
@@ -22,9 +20,10 @@
         | – OR –
 
   .span5    
-    = form_for @user, :url => sign_up_path do |f|
+    = form_for @user, :url => sign_up_path do |f|      
       fieldset
         legend Sign Up
+        = render :partial => 'shared/errors', :locals => { :object => @user }
         .control-group
           .row-fluid
             .controls            

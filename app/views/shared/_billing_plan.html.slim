@@ -45,14 +45,21 @@
           | , per developer
 
     .text_align-center
-      - unless current_user.subscribed_to?(plan, :monthly)
-        = form_tag subscribe_path, :method => :post, :class => 'margin-none' do
-          = hidden_field_tag '[subscription]plan', plan.key
-          = hidden_field_tag '[subscription]type', 'monthly'
-          = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"    
+      - unless current_user.subscribed_to?(plan, :monthly)        
+        = form_for @subscription, :as => 'subscription', :url => subscribe_path, :class => 'margin-none form-inline' do |f|
+          = f.hidden_field :plan_key, :value => plan.key
+          = f.hidden_field :type, :value => 'monthly'
+          - if plan.maximum_developers_count > 1
+            =' f.select :developers_count, options_for_select([1,2,3].map{ |i| [pluralize(i, 'developer'), i] }), {}, { :class => 'margin-none input-medium' }
+          = f.submit 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"  
       - else
         strong
           | Your current plan
+        br
+        ' With
+        strong
+          = pluralize(current_user.billing_subscription.developers_count, 'developer')
+
 
   .billint_plan__price
     p
@@ -65,10 +72,16 @@
 
     .text_align-center
       - unless current_user.subscribed_to?(plan, :annual)
-        = form_tag subscribe_path, :method => :post, :class => 'margin-none' do
-          = hidden_field_tag '[subscription]plan', plan.key
-          = hidden_field_tag '[subscription]type', 'annual'
-          = submit_tag 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"
+        = form_for @subscription, :as => 'subscription', :url => subscribe_path, :class => 'margin-none form-inline' do |f|
+          = f.hidden_field :plan_key, :value => plan.key
+          = f.hidden_field :type, :value => 'annual'
+          - if plan.maximum_developers_count > 1
+            =' f.select :developers_count, options_for_select([1,2,3].map{ |i| [pluralize(i, 'developer'), i] }), {}, { :class => 'margin-none input-medium' }
+          = f.submit 'Take a seat!', :class => "btn #{plan.key.to_sym == :hardcore ? 'btn-success' : nil}"
       - else
         strong
           | Your current plan
+        br
+        ' With
+        strong
+          = pluralize(current_user.billing_subscription.developers_count, 'developer')  

@@ -6,9 +6,9 @@
   .pull-right
     - if current_user.billing_subscription.present?
       - if current_user.billing_subscription.trial?
-        | Trial until:
+        ' Trial until:
       - else
-        | Next billed on:  
+        ' Next billed on:
       strong
         = l(current_user.billing_subscription.next_billing_date, :format => :human)
 
