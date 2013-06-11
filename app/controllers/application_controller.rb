@@ -54,6 +54,13 @@ protected
     redirect_to(root_url) and return false if current_user.billing_card.blank?
     return true
   end
+
+  def require_user_with_trial_subscription
+    return false if !self.require_user
+    
+    redirect_to(root_url) and return false if current_user.billing_subscription.blank? || !current_user.billing_subscription.trial?
+    return true
+  end
   
   def require_no_user
     redirect_to(root_url) and return false if current_user

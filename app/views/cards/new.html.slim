@@ -4,11 +4,12 @@
   h3
     | Assign Credit Card
 .modal-body
-  .alert.alert-block
-    ' Please note that this application
+  .alert.alert-info
+    ' Due to
     strong
-      | is only a demo
-    | . Use only test credit card numbers provided by Braintree:
+      | this application is only a demo
+    | , you can only use test credit card numbers provided by Braintree. Follow the link to find out more information.
+    br
     br
     = link_to 'https://www.braintreepayments.com/docs/ruby/reference/sandbox', 'https://www.braintreepayments.com/docs/ruby/reference/sandbox', :target => '_blank'
   = render :partial => 'cards/form'

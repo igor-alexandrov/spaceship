@@ -205,6 +205,15 @@ class Billing::Subscription::Base < ActiveRecord::Base
     # self.inherit_additional_services!(subscription)
   end
 
+  def finish_trial
+    return false if !self.trial?
+
+    self.trial = false
+    self.next_billing_date = Date.today
+
+    self.save
+  end
+
 protected
   
   def set_billing_dates

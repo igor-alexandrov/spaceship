@@ -14,5 +14,6 @@ Spaceship::Application.routes.draw do
   resources :cards, :only => [:new, :create, :destroy]
 
   post '/' => 'home#subscribe', :as => 'subscribe'
+  post '/finish_trial' => 'home#finish_trial'
   root :to => 'home#index'
 end
