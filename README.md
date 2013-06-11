@@ -1,1 +1,3 @@
-[Demo application](http://spaceship.dev.jetrockets.ru) for DevConf 2013
+Demo application for DevConf 2013.
+
+[http://spaceship.dev.jetrockets.ru](http://spaceship.dev.jetrockets.ru)
