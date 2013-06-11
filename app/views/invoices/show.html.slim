@@ -1,0 +1,51 @@
+.modal-header
+  button.close{ data-dismiss="modal" }
+    | &times;
+  h3
+    | Invoice Details
+
+.modal-body
+  - if @invoice.params.present?
+    h4
+      = @invoice.title
+  table.table
+    thead
+      tr
+        th
+          | Description
+        th
+          | Amount
+    tbody
+      - if @invoice.params.present?    
+        - @invoice.params.each do |param|
+          tr
+            td
+              = param[:description]
+            td
+              = number_to_currency(param[:amount])
+      - else
+        tr
+          td
+            = @invoice.title
+          td
+            = number_to_currency(@invoice.full_amount)
+
+      tr
+        td.text_align-right
+          strong
+            | Deducted from credit:
+        td
+          strong
+            = number_to_currency(@invoice.credit_deduction)
+    tfoot.tfoot-total
+      tr
+        td.text_align-right
+          strong
+            | Total:
+        td
+          strong
+            = number_to_currency(@invoice.amount)
+
+.modal-footer
+  a.btn{ data-dismiss="modal" }
+    | Cancel
