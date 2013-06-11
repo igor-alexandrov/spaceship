@@ -1,8 +1,8 @@
-.billint_plan.span6
-  h2.billint_plan__title{ class="#{plan.key.to_sym == :hardcore ? 'text-error' : 'muted'}" }
+.billing_plan.span6
+  h2.billing_plan__title{ class="#{plan.key.to_sym == :hardcore ? 'text-error' : 'muted'}" }
     = plan.title
 
-  ul.billint_plan__features
+  ul.billing_plan__features
     li
       - if plan.maximum_developers_count > 1
         | Up to 
@@ -35,7 +35,7 @@
         strong
          | trial
 
-  .billint_plan__price
+  .billing_plan__price
     p
       strong
         =' number_to_currency(plan.monthly_amount, :precision => 0)
@@ -61,7 +61,7 @@
           = pluralize(current_user.billing_subscription.developers_count, 'developer')
 
 
-  .billint_plan__price
+  .billing_plan__price
     p
       strong
         =' number_to_currency(plan.annual_amount, :precision => 0)
