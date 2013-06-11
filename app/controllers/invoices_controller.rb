@@ -7,6 +7,8 @@ class InvoicesController < ApplicationController
   end
 
   def show
+    @invoice = current_user.billing_invoices.find(params[:id])
+    render :layout => false
   end
 
   def pay

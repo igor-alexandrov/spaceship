@@ -16,7 +16,7 @@
           td= transaction.invoice_id
           td= transaction.action.titleize
           td= transaction.status.titleize
-          td= transaction.amount
+          td= number_to_currency(transaction.amount)
           td= transaction.created_at.strftime('%e %b %Y')
           
   = will_paginate @transactions, :renderer => Spaceship::WillPaginateRenderer, :link_attributes => { 'data-push' => 'true' }

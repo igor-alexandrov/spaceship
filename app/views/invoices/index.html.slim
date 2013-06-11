@@ -15,10 +15,10 @@
           | Issue date
         th        
     tbody
-      - @invoices.each_with_index do |i, index|
+      - @invoices.each do |i|
         tr
           td.align-middle
-            = index + 1
+            = i.id
           td.align-middle.text_align-center.span1
             - if !i.paid?
               i.icon-exclamation-sign
