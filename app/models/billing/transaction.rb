@@ -52,7 +52,10 @@ protected
     result = Braintree::Transaction.sale(
       :amount => self.amount,
       :customer_id => self.user.try(:braintree_customer_id),
-      :payment_method_token => self.user.try(:billing_card).try(:token)
+      :payment_method_token => self.user.try(:billing_card).try(:token),
+      :options => {
+        :submit_for_settlement => true
+      }
     )
 
     self.provider_id = result.transaction.id
