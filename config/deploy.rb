@@ -1,38 +1,23 @@
-#############################################################
-# New Relic
-# require 'new_relic/recipes'# require 'new_relic/recipes'
-
-#############################################################
-# RVM bootstrap
-# $:.unshift(File.expand_path("~/.rvm/lib"))
 require 'rvm/capistrano'
 set :rvm_ruby_string, '1.9.3-p327'
 set :rvm_type, :user
 
-#############################################################
-# Bundler bootstrap
 require 'bundler/capistrano'
 
-#############################################################
-# Capistrano Colors
 require 'capistrano_colors'
-
-#############################################################
-# Multistage
 require 'capistrano/ext/multistage'
 set :default_stage, "production"
 set :stages, %w(production staging)
 
-#############################################################
-# Settings
+require "whenever/capistrano"
+set :whenever_command, 'bundle exec whenever'
+
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 set :use_sudo, false
 set :group_writable, false
 set :scm_verbose, true
 
-#############################################################
-# Git
 set :scm, :git
 set :repository, "git@github.com:igor-alexandrov/spaceship.git"
 set :deploy_via, :remote_cache
