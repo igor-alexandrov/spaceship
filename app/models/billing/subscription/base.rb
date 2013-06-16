@@ -30,8 +30,8 @@ class Billing::Subscription::Base < ActiveRecord::Base
   
   default_scope order(:subscription_date.desc)
   
-  scope :active, where("subscriptions.subscription_date <= ? AND (subscriptions.unsubscription_date IS NULL OR subscriptions.unsubscription_date > ?)", Date.today, Date.today)    
-  scope :should_be_billed, where("( subscriptions.next_billing_date <= ? ) AND (subscriptions.unsubscription_date IS NULL)", Date.today)
+  scope :active, where("billing_subscriptions.subscription_date <= ? AND (billing_subscriptions.unsubscription_date IS NULL OR billing_subscriptions.unsubscription_date > ?)", Date.today, Date.today)    
+  scope :should_be_billed, where("( billing_subscriptions.next_billing_date <= ? ) AND (billing_subscriptions.unsubscription_date IS NULL)", Date.today)
 
   scope :with_elapsing_trial, lambda { |days = 0|
     where{

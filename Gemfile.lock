@@ -41,6 +41,7 @@ GEM
     braintree (2.23.0)
       builder (>= 2.0.0)
     builder (3.0.4)
+    chronic (0.9.1)
     closure-compiler (1.1.8)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -126,6 +127,9 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    whenever (0.8.2)
+      activesupport (>= 2.3.4)
+      chronic (>= 0.6.3)
     will_paginate (3.0.4)
     wiselinks (0.6.3)
     wiserespond (1.0.1)
@@ -151,6 +155,7 @@ DEPENDENCIES
   slim
   squeel
   unicorn
+  whenever
   will_paginate
   wiselinks
   wiserespond
