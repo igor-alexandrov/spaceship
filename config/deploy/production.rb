@@ -6,9 +6,9 @@ set :user, "www"
 
 server "www.jetrockets.ru", :app, :web, :db, :primary => true
 
-role :app, 'www.jetrockets.ru'
-role :web, 'www.jetrockets.ru'
-role :db,  'www.jetrockets.ru', :primary => true
+role :app, 'spaceship.dev.jetrockets.ru'
+role :web, 'spaceship.dev.jetrockets.ru'
+role :db,  'spaceship.dev.jetrockets.ru', :primary => true
 
 
 # Getting current branch
