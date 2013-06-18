@@ -4,12 +4,7 @@ set :deploy_to, "/srv/www/#{application}"
 set :rails_env, "production"
 set :user, "www"
 
-server "www.jetrockets.ru", :app, :web, :db, :primary => true
-
-role :app, 'spaceship.dev.jetrockets.ru'
-role :web, 'spaceship.dev.jetrockets.ru'
-role :db,  'spaceship.dev.jetrockets.ru', :primary => true
-
+server "spaceship.dev.jetrockets.ru", :app, :web, :db, :primary => true
 
 # Getting current branch
 def current_git_branch
