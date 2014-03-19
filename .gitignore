@@ -13,3 +13,6 @@ db/schema.rb
 
 *.sublime-project
 *.sublime-workspace
+
+.ruby-gemset
+.ruby-version
