@@ -12,7 +12,7 @@
       strong
         = l(current_user.billing_subscription.next_billing_date, :format => :human)
 
-- if current_user.billing_subscription.trial?
+- if current_user.billing_subscription.present? && current_user.billing_subscription.trial?
   .alert.alert-info  
     p
       ' Your subscription is on trial now. This means that you can change tariff plan or number of developers absolutely free and
